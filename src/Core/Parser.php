@@ -768,7 +768,7 @@ class Parser
                     $key = $this->parseExpression();
                     $this->expect(TokenType::Colon, "Expected colon between key and value in object literal");
                     $value = $this->parseExpression();
-                    $values->attach($key, $value);
+                    $values->offsetSet($key, $value);
                     if ($this->is(TokenType::Comma)) {
                         $this->current++; // consume comma
                     }
