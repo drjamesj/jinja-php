@@ -79,7 +79,7 @@ class Environment
             'lower' => fn(RuntimeValue $operand) => $operand instanceof StringValue && $operand->value === strtolower($operand->value),
             'upper' => fn(RuntimeValue $operand) => $operand instanceof StringValue && $operand->value === strtoupper($operand->value),
             'none' => fn(RuntimeValue $operand) => $operand instanceof NullValue,
-            'defined' => fn(RuntimeValue $operand) => $operand instanceof UndefinedValue,
+            'defined' => fn(RuntimeValue $operand) => !($operand instanceof UndefinedValue),
             'undefined' => fn(RuntimeValue $operand) => $operand instanceof UndefinedValue,
             'equalto' => fn(RuntimeValue $a, RuntimeValue $b) => $a->value === $b->value,
             'eq' => fn(RuntimeValue $a, RuntimeValue $b) => $a->value === $b->value,

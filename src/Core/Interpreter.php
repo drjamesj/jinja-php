@@ -779,7 +779,7 @@ class Interpreter
                     $value = new StringValue($object->value[$index]);
                 }
             } else if ($property instanceof StringValue) {
-                $value = $object->builtins[$property->value];
+                $value = $object->builtins[$property->value] ?? new NullValue();
             } else {
                 throw new RuntimeException("Cannot access property with non-string/non-number: got {$property->type}");
             }
@@ -787,7 +787,7 @@ class Interpreter
             if (!($property instanceof StringValue)) {
                 throw new RuntimeException("Cannot access property with non-string: got {$property->type}");
             }
-            $value = $object->builtins[$property->value];
+            $value = $object->builtins[$property->value] ?? new NullValue();
         }
 
         return $value instanceof RuntimeValue ? $value : new UndefinedValue();

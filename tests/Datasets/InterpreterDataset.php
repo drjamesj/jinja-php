@@ -9,6 +9,8 @@ const EXAMPLE_FOR_TEMPLATE_3 = "{% for item in seq %}\n    {{ item }}\n{%- endfo
 const EXAMPLE_FOR_TEMPLATE_4 = "{% for item in seq -%}\n    {{ item }}\n{%- endfor %}";
 const EXAMPLE_COMMENT_TEMPLATE = "    {# comment #}\n  {# {% if true %} {% endif %} #}\n";
 const EXAMPLE_OBJECT_LITERAL_TEMPLATE = "{% set obj = { 'key1': 'value1', 'key2': 'value2' } %}{{ obj.key1 }} - {{ obj.key2 }}";
+const EXAMPLE_OBJECT_GET_MISSING = "{% set obj = { 'key1': 'value1' } %}[{{ obj.get('key3') }}]{% if obj.get('key3') %}yes{% else %}no{% endif %}";
+const EXAMPLE_IS_DEFINED = "{% if foo is defined %}yes{% else %}no{% endif %} {% if foo is not defined %}yes{% else %}no{% endif %} {% if foo is undefined %}yes{% else %}no{% endif %}";
 const EXAMPLE_OBJECT_GET = "{% set obj = { 'key1': 'value1', 'key2': 'value2' } %}{{ obj.get('key1') }} - {{ obj.get('key3', 'default') }}";
 
 dataset('interpreterTestData', [
@@ -160,5 +162,33 @@ dataset('interpreterTestData', [
         'lstrip_blocks' => true,
         'trim_blocks' => true,
         'target' => "value1 - default",
+    ],
+    'object get method, missing key without a default' => [
+        'template' => EXAMPLE_OBJECT_GET_MISSING,
+        'data' => [],
+        'lstrip_blocks' => false,
+        'trim_blocks' => false,
+        'target' => "[]no",
+    ],
+    'is defined (variable not set)' => [
+        'template' => EXAMPLE_IS_DEFINED,
+        'data' => [],
+        'lstrip_blocks' => false,
+        'trim_blocks' => false,
+        'target' => "no yes yes",
+    ],
+    'is defined (variable set)' => [
+        'template' => EXAMPLE_IS_DEFINED,
+        'data' => ['foo' => 'bar'],
+        'lstrip_blocks' => false,
+        'trim_blocks' => false,
+        'target' => "yes no no",
+    ],
+    'is defined (variable set to null)' => [
+        'template' => EXAMPLE_IS_DEFINED,
+        'data' => ['foo' => null],
+        'lstrip_blocks' => false,
+        'trim_blocks' => false,
+        'target' => "yes no no",
     ],
 ]);
